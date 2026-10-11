@@ -10,7 +10,7 @@ Instructions for coding agents (Claude Code and others) asked to "make my GitHub
 
 ## Workflow
 
-1. **Ask** (or infer from the request): GitHub username, preferred style (`terminal`, `y2k`, `pixel`, `minimal`, `garden`, `minecraft` — show `npx -y github:monokernn/readme-atelier themes`), links to include.
+1. **Ask** (or infer from the request): GitHub username, preferred style (`minimal`, `y2k`, `minecraft`, `terminal`, `pixel`, `garden` — show `npx -y github:monokernn/readme-atelier themes`), links to include.
 2. **Research** the user's public repositories (`gh repo list <user> --limit 30 --json name,description,stargazerCount,primaryLanguage` or the GitHub API). Note what they actually build.
 3. **Write `atelier.yml`** in an empty working folder:
    - `tagline`: one specific line, ≤ 60 chars, no buzzwords ("passionate", "rockstar", "ninja").

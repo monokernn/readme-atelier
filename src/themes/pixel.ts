@@ -144,7 +144,7 @@ export const pixel: Theme = {
 
     const size = fitSize(c.name.toUpperCase(), 40, 520, SK, 18);
     let text =
-      `<text x="32" y="76" class="__h" style="font-size:${size}px" fill="${c.accent}">${esc(c.name)}</text>` +
+      `<text x="28" y="75" class="__h" style="font-size:${size}px" fill="#07030f">${esc(c.name)}</text>` +
       `<text x="28" y="72" class="__h" style="font-size:${size}px">${esc(c.name)}</text>`;
     let ty = 104;
     for (const l of wrap(c.tagline, 52, 2)) {

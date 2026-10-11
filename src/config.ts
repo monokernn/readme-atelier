@@ -2,13 +2,13 @@ import { parse, stringify } from 'yaml';
 import type { AtelierConfig, Ctx, Profile, Scheme, SectionId, Social, SocialKind, ThemeId } from './types.js';
 import { isHex, normHex } from './util.js';
 
-export const THEME_IDS: ThemeId[] = ['terminal', 'y2k', 'pixel', 'minimal', 'garden', 'minecraft'];
+export const THEME_IDS: ThemeId[] = ['minimal', 'y2k', 'minecraft', 'terminal', 'pixel', 'garden'];
 export const SECTION_IDS: SectionId[] = ['header', 'socials', 'stats', 'activity', 'repos', 'stack', 'footer'];
 export const SOCIAL_KINDS: SocialKind[] = [
   'x', 'github', 'website', 'linkedin', 'telegram', 'email', 'youtube', 'discord', 'twitch', 'bluesky', 'instagram', 'devto',
 ];
 
-export function defaultConfig(username: string, theme: ThemeId = 'terminal'): AtelierConfig {
+export function defaultConfig(username: string, theme: ThemeId = 'y2k'): AtelierConfig {
   return {
     username,
     theme,
@@ -24,7 +24,7 @@ const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0
 export function normalizeConfig(raw: any, fallbackUser = ''): AtelierConfig {
   raw = raw && typeof raw === 'object' ? raw : {};
   const username = (str(raw.username, 39) || fallbackUser).replace(/^@/, '');
-  const theme: ThemeId = THEME_IDS.includes(raw.theme) ? raw.theme : 'terminal';
+  const theme: ThemeId = THEME_IDS.includes(raw.theme) ? raw.theme : 'y2k';
   const cfg: AtelierConfig = { username, theme };
   const name = str(raw.name, 40);
   if (name) cfg.name = name;
@@ -63,7 +63,7 @@ export function configToYaml(cfg: AtelierConfig): string {
   }
   return (
     '# Readme Atelier — edit this file, commit, and your profile rebuilds itself.\n' +
-    '# Themes: terminal · y2k · pixel · minimal · garden · minecraft\n' +
+    '# Themes: minimal · y2k · minecraft · terminal · pixel · garden\n' +
     '# Docs: https://github.com/monokernn/readme-atelier#config\n\n' +
     stringify(clean, { lineWidth: 0 })
   );

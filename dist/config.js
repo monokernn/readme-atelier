@@ -1,11 +1,11 @@
 import { parse, stringify } from 'yaml';
 import { isHex, normHex } from './util.js';
-export const THEME_IDS = ['terminal', 'y2k', 'pixel', 'minimal', 'garden', 'minecraft'];
+export const THEME_IDS = ['minimal', 'y2k', 'minecraft', 'terminal', 'pixel', 'garden'];
 export const SECTION_IDS = ['header', 'socials', 'stats', 'activity', 'repos', 'stack', 'footer'];
 export const SOCIAL_KINDS = [
     'x', 'github', 'website', 'linkedin', 'telegram', 'email', 'youtube', 'discord', 'twitch', 'bluesky', 'instagram', 'devto',
 ];
-export function defaultConfig(username, theme = 'terminal') {
+export function defaultConfig(username, theme = 'y2k') {
     return {
         username,
         theme,
@@ -19,7 +19,7 @@ const str = (v, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : 
 export function normalizeConfig(raw, fallbackUser = '') {
     raw = raw && typeof raw === 'object' ? raw : {};
     const username = (str(raw.username, 39) || fallbackUser).replace(/^@/, '');
-    const theme = THEME_IDS.includes(raw.theme) ? raw.theme : 'terminal';
+    const theme = THEME_IDS.includes(raw.theme) ? raw.theme : 'y2k';
     const cfg = { username, theme };
     const name = str(raw.name, 40);
     if (name)
@@ -66,7 +66,7 @@ export function configToYaml(cfg) {
             delete clean[k];
     }
     return ('# Readme Atelier — edit this file, commit, and your profile rebuilds itself.\n' +
-        '# Themes: terminal · y2k · pixel · minimal · garden · minecraft\n' +
+        '# Themes: minimal · y2k · minecraft · terminal · pixel · garden\n' +
         '# Docs: https://github.com/monokernn/readme-atelier#config\n\n' +
         stringify(clean, { lineWidth: 0 }));
 }

@@ -71,7 +71,7 @@ async function main() {
     const out = String(flags.out ?? '.');
     const user = String(flags.user ?? process.env.ATELIER_USER ?? '');
     if (cmd === 'init') {
-        const theme = (THEME_IDS.includes(flags.theme) ? flags.theme : 'terminal');
+        const theme = (THEME_IDS.includes(flags.theme) ? flags.theme : 'y2k');
         const cfg = defaultConfig(user || 'your-username', theme);
         const cfgPath = path.join(out, 'atelier.yml');
         if (fs.existsSync(cfgPath))

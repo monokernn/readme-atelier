@@ -38,6 +38,8 @@ function defs(accent) {
 <linearGradient id="__glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset=".45" stop-color="#fff" stop-opacity=".07"/><stop offset="1" stop-color="#fff" stop-opacity=".03"/></linearGradient>
 <linearGradient id="__shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
 <radialGradient id="__sun"><stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#fff" stop-opacity=".95"/><stop offset=".42" stop-color="#cfe2ff" stop-opacity=".45"/><stop offset="1" stop-color="#5b8cff" stop-opacity="0"/></radialGradient>
+<linearGradient id="__scrim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#01063d" stop-opacity=".78"/><stop offset=".42" stop-color="#01063d" stop-opacity=".45"/><stop offset=".68" stop-color="#01063d" stop-opacity="0"/></linearGradient>
+<filter id="__ts" x="-5%" y="-20%" width="110%" height="140%"><feDropShadow dx="0" dy="1" stdDeviation="1.6" flood-color="#000628" flood-opacity=".85"/></filter>
 <radialGradient id="__fish" cx=".5" cy=".46" r=".72"><stop offset=".62" stop-color="#000418" stop-opacity="0"/><stop offset="1" stop-color="#000418" stop-opacity=".78"/></radialGradient>
 <filter id="__soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="5"/></filter>
 <filter id="__ripple" x="0" y="-10%" width="100%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.08" numOctaves="2" seed="4"><animate attributeName="baseFrequency" dur="10s" values="0.004 0.08;0.006 0.105;0.004 0.08" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>`;
@@ -66,11 +68,11 @@ function panel(c, w, h, title, inner, seed) {
             `<rect width="${w}" height="${h}" fill="url(#__fish)" opacity=".55"/>`,
     };
 }
-function clouds(seed, w, y0, y1, n) {
+function clouds(seed, x0, x1, y0, y1, n) {
     const r = rng(seed);
     let out = '';
     for (let i = 0; i < n; i++) {
-        const cx = r.range(-20, w + 20);
+        const cx = r.range(x0, x1);
         const cy = r.range(y0, y1);
         const s = r.range(0.6, 1.4);
         let blobs = '';
@@ -121,13 +123,14 @@ export const y2k = {
             top += `<text x="38" y="${102 + i * 18}" class="__t" fill-opacity=".72" style="font-size:10.5px">${esc(truncate(l, 64))}</text>`;
         });
         const body = `<rect width="${W}" height="${H}" fill="url(#__sky)"/>` +
-            clouds(p.login, W, 70, 190, 7) +
+            clouds(p.login, 470, W + 30, 60, 200, 6) +
             `<g><circle cx="640" cy="104" r="120" fill="url(#__sun)"/>` +
             `<g class="__spin">` +
             [0, 45, 90, 135].map((a) => `<ellipse cx="640" cy="104" rx="170" ry="1.6" fill="#fff" opacity=".8" transform="rotate(${a} 640 104)"/>`).join('') +
             [22.5, 67.5, 112.5, 157.5].map((a) => `<ellipse cx="640" cy="104" rx="64" ry="1.1" fill="#fff" opacity=".6" transform="rotate(${a} 640 104)"/>`).join('') +
             `</g><circle cx="640" cy="104" r="17" fill="#fff"/>` +
             `<circle cx="566" cy="160" r="9" fill="${c.accent}" opacity=".28"/><circle cx="488" cy="214" r="24" fill="#9cbcff" opacity=".14"/><circle cx="420" cy="262" r="6" fill="#fff" opacity=".3"/></g>` +
+            `<rect width="${W}" height="${HZ}" fill="url(#__scrim)"/>` +
             `<g fill="#06135a">${city}</g>${lights}` +
             `<g filter="url(#__ripple)">` +
             `<rect x="-20" y="${HZ}" width="${W + 40}" height="${H - HZ + 30}" fill="url(#__water)"/>` +
@@ -139,7 +142,7 @@ export const y2k = {
             `<rect y="${HZ - 0.5}" width="${W}" height="1.2" fill="#fff" opacity=".55"/>` +
             nameText(c.accent, `opacity=".45" transform="translate(0 4)"`) +
             nameText('url(#__chrome)', `stroke="#fff" stroke-opacity=".55" stroke-width=".8"`) +
-            top +
+            `<g filter="url(#__ts)">${top}</g>` +
             `<rect width="${W}" height="${H}" fill="url(#__fish)"/>` +
             `<rect x=".75" y=".75" width="${W - 1.5}" height="${H - 1.5}" rx="21" stroke="#fff" stroke-opacity=".3" stroke-width="1.5"/>`;
         return card(W, H, `${c.name} — GitHub profile`, { radius: 22, fonts: FONTS, css: css(c.accent), defs: defs(c.accent), body });

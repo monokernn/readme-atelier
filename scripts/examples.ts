@@ -1,7 +1,7 @@
 // Renders the README gallery (examples/<theme>/*.svg) from fictional demo profiles.
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildAssets } from '../src/build.js';
+import { buildAssets, renderNamedCard } from '../src/build.js';
 import { normalizeConfig, THEME_IDS } from '../src/config.js';
 import { DEMO_CONFIG, demoProfile } from '../src/demo.js';
 
@@ -17,4 +17,14 @@ for (const id of THEME_IDS) {
     fs.writeFileSync(f, svg);
   }
 }
+// project banner for the top of README.md
+const hero = { ...demoProfile('nova-kim'), login: 'readme-atelier', name: 'Readme Atelier' };
+const heroCfg = normalizeConfig({
+  username: 'readme-atelier',
+  theme: 'y2k',
+  name: 'Readme Atelier',
+  tagline: 'Designed, self-updating GitHub profiles',
+  about: ['Six animated styles · live stats', 'Rebuilds itself daily with a GitHub Action', 'Free & open source · no sign-in'],
+});
+fs.writeFileSync('examples/hero.svg', (await renderNamedCard(hero, heroCfg, 'header'))!);
 console.log('examples written');

@@ -74,7 +74,7 @@ async function main() {
   const user = String(flags.user ?? process.env.ATELIER_USER ?? '');
 
   if (cmd === 'init') {
-    const theme = (THEME_IDS.includes(flags.theme as ThemeId) ? flags.theme : 'terminal') as ThemeId;
+    const theme = (THEME_IDS.includes(flags.theme as ThemeId) ? flags.theme : 'y2k') as ThemeId;
     const cfg = defaultConfig(user || 'your-username', theme);
     const cfgPath = path.join(out, 'atelier.yml');
     if (fs.existsSync(cfgPath)) console.log('atelier.yml already exists — left untouched');

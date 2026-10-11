@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./examples/y2k/header.svg" width="100%" alt="Readme Atelier — Deep Blue style"/>
+  <img src="./examples/hero.svg" width="100%" alt="Readme Atelier — designed, self-updating GitHub profiles"/>
 </p>
 
 <h1 align="center">Readme Atelier</h1>
@@ -52,12 +52,12 @@ Writes `README.md`, `atelier/*.svg` and a `preview.html`. Use `--demo` to try st
 
 | | |
 |---|---|
-| **Phosphor** `terminal`<br/>CRT terminal, scanlines, glow, typed-in name, neofetch readout. | <img src="./examples/terminal/header.svg" width="420"/> |
-| **Deep Blue** `y2k`<br/>Y2K dreamcore: ultramarine sky, star-burst sun, chrome type, rippling waterline. | <img src="./examples/y2k/header.svg" width="420"/> |
-| **Lofi Night** `pixel`<br/>A pixel city at night — every building is a week of your commits. | <img src="./examples/pixel/header.svg" width="420"/> |
 | **Editorial** `minimal`<br/>Swiss-editorial type, ruled headlines, serif italics. Light + dark. | <img src="./examples/minimal/header.svg" width="420"/> |
-| **Garden** `garden`<br/>A floating island: repos grow into trees, contributions bloom. | <img src="./examples/garden/header.svg" width="420"/> |
+| **Deep Blue** `y2k`<br/>Y2K dreamcore: ultramarine sky, star-burst sun, chrome type, rippling waterline. | <img src="./examples/y2k/header.svg" width="420"/> |
 | **Blocky** `minecraft`<br/>A blocky sandbox world, inventory stats, ore-block activity. | <img src="./examples/minecraft/header.svg" width="420"/> |
+| **Phosphor** `terminal`<br/>CRT terminal, scanlines, glow, typed-in name, neofetch readout. | <img src="./examples/terminal/header.svg" width="420"/> |
+| **Lofi Night** `pixel`<br/>A pixel city at night — every building is a week of your commits. | <img src="./examples/pixel/header.svg" width="420"/> |
+| **Garden** `garden`<br/>A floating island: repos grow into trees, contributions bloom. | <img src="./examples/garden/header.svg" width="420"/> |
 
 Every style renders the same set of cards: `header`, `stats`, `languages`, `activity`, `repo-1…4`, `stack`, `footer` and one badge per link.
 
@@ -67,7 +67,7 @@ Every style renders the same set of cards: `header`, `stats`, `languages`, `acti
 
 ```yaml
 username: you              # optional in the Action — defaults to the repo owner
-theme: y2k                 # terminal | y2k | pixel | minimal | garden | minecraft
+theme: y2k                 # minimal | y2k | minecraft | terminal | pixel | garden
 name: Your Name            # defaults to your GitHub name
 tagline: Building small, fast things
 about:                     # up to 4 short lines

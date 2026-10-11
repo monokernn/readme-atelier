@@ -10,7 +10,7 @@ You produce the **words and config**; the generator renders the visuals. Never d
 ## 1. Gather
 - GitHub username (try `gh api user --jq .login` if they are signed in to `gh`).
 - Style. If unsure, list them: `npx -y github:monokernn/readme-atelier themes`.
-  `terminal` (CRT/neofetch) · `y2k` (deep-blue dreamcore) · `pixel` (lofi pixel city) · `minimal` (editorial, light+dark) · `garden` (floating island) · `minecraft` (blocky sandbox).
+  `minimal` (editorial, light+dark) · `y2k` (deep-blue dreamcore) · `minecraft` (blocky sandbox) · `terminal` (CRT/neofetch) · `pixel` (lofi pixel city) · `garden` (floating island).
 - Links to show (X, website, LinkedIn, Telegram, Bluesky, email…).
 
 ## 2. Research their work
