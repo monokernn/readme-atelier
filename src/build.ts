@@ -144,6 +144,8 @@ permissions:
 
 jobs:
   build:
+    # never runs inside the template itself, only in your copy
+    if: github.repository != 'monokernn/readme-atelier-template'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
