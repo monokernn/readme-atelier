@@ -26,7 +26,10 @@ function css(accent) {
 @keyframes __sh{0%{transform:translateX(-300px)}60%,100%{transform:translateX(1100px)}}
 .__pulse{animation:__pulse 2.4s ease-in-out infinite}
 @keyframes __pulse{50%{opacity:.55}}
-.__acc{fill:${accent}}`;
+.__acc{fill:${accent}}
+.__fly{animation:__fly 90s linear infinite}
+@keyframes __fly{from{transform:translateX(-220px)}to{transform:translateX(1060px)}}
+.__inv text{fill:#0b1f86}`;
 }
 function defs(accent) {
     return `
@@ -68,19 +71,30 @@ function panel(c, w, h, title, inner, seed) {
             `<rect width="${w}" height="${h}" fill="url(#__fish)" opacity=".55"/>`,
     };
 }
-function clouds(seed, x0, x1, y0, y1, n) {
+/**
+ * Clouds that drift across the whole sky. Returned once for the scene and once for a mask,
+ * with identical geometry and timing, so text can switch color exactly where a cloud passes.
+ * Without animation (reduced motion) each cloud rests at `rest` — on the right, away from the text.
+ */
+function clouds(seed, n, y0, y1) {
     const r = rng(seed);
-    let out = '';
+    let scene = '';
+    let mask = '';
     for (let i = 0; i < n; i++) {
-        const cx = r.range(x0, x1);
         const cy = r.range(y0, y1);
-        const s = r.range(0.6, 1.4);
+        const s = r.range(0.7, 1.3);
+        const dur = r.range(70, 120);
+        const delay = (i / n) * dur + r.range(0, 8);
+        const rest = r.range(500, 800);
+        const op = r.range(0.6, 0.95).toFixed(2);
         let blobs = '';
         for (let k = 0; k < 5; k++)
-            blobs += `<ellipse cx="${(cx + r.range(-38, 38) * s).toFixed(1)}" cy="${(cy + r.range(-8, 6) * s).toFixed(1)}" rx="${(r.range(18, 34) * s).toFixed(1)}" ry="${(r.range(10, 18) * s).toFixed(1)}"/>`;
-        out += `<g class="${i % 2 ? '__drift' : '__drift2'}" fill="#fff" opacity="${r.range(0.55, 0.95).toFixed(2)}" filter="url(#__soft)">${blobs}</g>`;
+            blobs += `<ellipse cx="${(r.range(-38, 38) * s).toFixed(1)}" cy="${(cy + r.range(-8, 6) * s).toFixed(1)}" rx="${(r.range(18, 34) * s).toFixed(1)}" ry="${(r.range(10, 18) * s).toFixed(1)}"/>`;
+        const g = (fill) => `<g class="__fly" style="transform:translateX(${rest.toFixed(0)}px);animation-duration:${dur.toFixed(1)}s;animation-delay:-${delay.toFixed(1)}s"><g fill="${fill}" opacity="${op}" filter="url(#__soft)">${blobs}</g></g>`;
+        scene += g('#fff');
+        mask += g('#fff');
     }
-    return out;
+    return { scene, mask };
 }
 export const y2k = {
     id: 'y2k',
@@ -122,8 +136,8 @@ export const y2k = {
         c.about.slice(0, 3).forEach((l, i) => {
             top += `<text x="38" y="${102 + i * 18}" class="__t" fill-opacity=".72" style="font-size:10.5px">${esc(truncate(l, 64))}</text>`;
         });
+        const cl = clouds(p.login, 6, 40, 200);
         const body = `<rect width="${W}" height="${H}" fill="url(#__sky)"/>` +
-            clouds(p.login, 470, W + 30, 60, 200, 6) +
             `<g><circle cx="640" cy="104" r="120" fill="url(#__sun)"/>` +
             `<g class="__spin">` +
             [0, 45, 90, 135].map((a) => `<ellipse cx="640" cy="104" rx="170" ry="1.6" fill="#fff" opacity=".8" transform="rotate(${a} 640 104)"/>`).join('') +
@@ -131,6 +145,7 @@ export const y2k = {
             `</g><circle cx="640" cy="104" r="17" fill="#fff"/>` +
             `<circle cx="566" cy="160" r="9" fill="${c.accent}" opacity=".28"/><circle cx="488" cy="214" r="24" fill="#9cbcff" opacity=".14"/><circle cx="420" cy="262" r="6" fill="#fff" opacity=".3"/></g>` +
             `<rect width="${W}" height="${HZ}" fill="url(#__scrim)"/>` +
+            cl.scene +
             `<g fill="#06135a">${city}</g>${lights}` +
             `<g filter="url(#__ripple)">` +
             `<rect x="-20" y="${HZ}" width="${W + 40}" height="${H - HZ + 30}" fill="url(#__water)"/>` +
@@ -143,9 +158,11 @@ export const y2k = {
             nameText(c.accent, `opacity=".45" transform="translate(0 4)"`) +
             nameText('url(#__chrome)', `stroke="#fff" stroke-opacity=".55" stroke-width=".8"`) +
             `<g filter="url(#__ts)">${top}</g>` +
+            `<g mask="url(#__cm)" class="__inv">${nameText('#0b2bb5', `stroke="#fff" stroke-opacity=".5" stroke-width=".8"`)}${top}</g>` +
             `<rect width="${W}" height="${H}" fill="url(#__fish)"/>` +
             `<rect x=".75" y=".75" width="${W - 1.5}" height="${H - 1.5}" rx="21" stroke="#fff" stroke-opacity=".3" stroke-width="1.5"/>`;
-        return card(W, H, `${c.name} — GitHub profile`, { radius: 22, fonts: FONTS, css: css(c.accent), defs: defs(c.accent), body });
+        const mask = `<mask id="__cm" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#000"/>${cl.mask}</mask>`;
+        return card(W, H, `${c.name} — GitHub profile`, { radius: 22, fonts: FONTS, css: css(c.accent), defs: defs(c.accent) + mask, body });
     },
     stats(c) {
         let inner = '';

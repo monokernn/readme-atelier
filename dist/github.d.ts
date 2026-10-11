@@ -16,3 +16,5 @@ export interface FetchOptions {
 }
 /** Collect everything the themes need. GraphQL requires a token; without one a reduced REST fallback is used. */
 export declare function fetchProfile(login: string, opts?: FetchOptions): Promise<Profile>;
+/** The public contribution graph (github.com/users/<login>/contributions) — works without a token. */
+export declare function scrapeCalendar(login: string): Promise<Day[]>;

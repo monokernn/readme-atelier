@@ -61,6 +61,8 @@ export interface Profile {
     repos: Repo[];
     /** ISO timestamp of when the data was collected */
     fetchedAt: string;
+    /** 'full' = GraphQL with a token; 'partial' = public fallback (no commit/PR/issue totals) */
+    source?: 'full' | 'partial';
 }
 export type SocialKind = 'x' | 'github' | 'website' | 'linkedin' | 'telegram' | 'email' | 'youtube' | 'discord' | 'twitch' | 'bluesky' | 'instagram' | 'devto';
 export interface Social {

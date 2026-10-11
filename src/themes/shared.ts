@@ -40,6 +40,17 @@ export interface StatRow {
 
 export function statRows(c: Ctx): StatRow[] {
   const s = c.p.stats;
+  if (c.p.source === 'partial') {
+    // without GraphQL we don't know commit/PR/issue totals — show only numbers we're sure of
+    return [
+      { key: 'stars', label: 'Stars earned', short: 'stars', value: s.stars },
+      { key: 'commits', label: 'Contributions · 12 mo', short: 'contributions', value: s.contributions },
+      { key: 'repos', label: 'Repositories', short: 'repos', value: c.p.publicRepos },
+      { key: 'followers', label: 'Followers', short: 'followers', value: c.p.followers },
+      { key: 'contributed', label: 'Longest streak, days', short: 'best streak', value: c.p.streak.longest },
+      { key: 'reviews', label: 'Following', short: 'following', value: c.p.following },
+    ];
+  }
   return [
     { key: 'stars', label: 'Stars earned', short: 'stars', value: s.stars },
     { key: 'commits', label: 'Commits · 12 mo', short: 'commits', value: s.commits },

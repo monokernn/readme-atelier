@@ -107,7 +107,20 @@ export async function fetchProfile(login, opts = {}) {
     login = login.trim().replace(/^@/, '');
     if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(login))
         throw new GitHubError('Invalid GitHub username', 400);
-    const p = opts.token ? await viaGraphQL(login, opts.token) : await viaRest(login);
+    let p;
+    if (opts.token) {
+        try {
+            p = await viaGraphQL(login, opts.token);
+        }
+        catch (e) {
+            // unknown user is final; anything else (bad token, rate limit, outage) degrades to the public fallback
+            if (e instanceof GitHubError && (e.status === 404 || e.status === 400))
+                throw e;
+            p = await viaRest(login, opts.token);
+        }
+    }
+    else
+        p = await viaRest(login);
     if (opts.featured?.length) {
         const picked = opts.featured
             .map((n) => p.repos.find((r) => r.name.toLowerCase() === n.toLowerCase()) ?? allRepos.get(login)?.find((r) => r.name.toLowerCase() === n.toLowerCase()))
@@ -176,13 +189,15 @@ async function viaGraphQL(login, token) {
         streak: computeStreak(calendar.filter((d) => d.date)),
         repos,
         fetchedAt: new Date().toISOString(),
+        source: 'full',
     };
 }
 /** Token-less fallback: no contribution calendar, languages by primary language only. */
-async function viaRest(login) {
-    const [u, list] = await Promise.all([
-        gh(`/users/${login}`),
-        gh(`/users/${login}/repos?per_page=100&type=owner&sort=pushed`),
+async function viaRest(login, token) {
+    const [u, list, calendar] = await Promise.all([
+        gh(`/users/${login}`, token).catch((e) => (token ? gh(`/users/${login}`) : Promise.reject(e))),
+        gh(`/users/${login}/repos?per_page=100&type=owner&sort=pushed`, token).catch((e) => token ? gh(`/users/${login}/repos?per_page=100&type=owner&sort=pushed`) : Promise.reject(e)),
+        scrapeCalendar(login),
     ]);
     const owned = list.filter((r) => !r.fork && !r.archived);
     const counts = new Map();
@@ -210,11 +225,48 @@ async function viaRest(login) {
         following: u.following,
         publicRepos: u.public_repos,
         createdAt: u.created_at,
-        stats: { stars: repos.reduce((s, r) => s + r.stars, 0), forks: repos.reduce((s, r) => s + r.forks, 0), commits: 0, prs: 0, issues: 0, reviews: 0, contributions: 0, contributedTo: 0 },
+        stats: {
+            stars: repos.reduce((s, r) => s + r.stars, 0),
+            forks: repos.reduce((s, r) => s + r.forks, 0),
+            commits: 0, prs: 0, issues: 0, reviews: 0, contributedTo: 0,
+            contributions: calendar.reduce((s, d) => s + d.count, 0),
+        },
         languages: Array.from(counts.entries()).map(([name, n]) => ({ name, color: '#8b8b8b', pct: (n / total) * 100 })).sort((a, b) => b.pct - a.pct).slice(0, 6),
-        calendar: [],
-        streak: { current: 0, longest: 0 },
+        calendar,
+        streak: computeStreak(calendar.filter((d) => d.date)),
         repos: repos.slice(0, 6),
         fetchedAt: new Date().toISOString(),
+        source: 'partial',
     };
+}
+/** The public contribution graph (github.com/users/<login>/contributions) — works without a token. */
+export async function scrapeCalendar(login) {
+    try {
+        const res = await fetch(`https://github.com/users/${encodeURIComponent(login)}/contributions`, { headers: { 'user-agent': 'readme-atelier' } });
+        if (!res.ok)
+            return [];
+        const html = await res.text();
+        const counts = new Map();
+        for (const m of html.matchAll(/<tool-tip[^>]*for="([^"]+)"[^>]*>([^<]*)<\/tool-tip>/g)) {
+            const n = m[2].match(/^([\d,]+) contribution/);
+            counts.set(m[1], n ? parseInt(n[1].replace(/,/g, ''), 10) : 0);
+        }
+        const days = [];
+        for (const m of html.matchAll(/<td[^>]*class="ContributionCalendar-day"[^>]*>/g)) {
+            const tag = m[0];
+            const date = tag.match(/data-date="([^"]+)"/)?.[1];
+            const id = tag.match(/id="([^"]+)"/)?.[1];
+            const level = Number(tag.match(/data-level="(\d)"/)?.[1] ?? 0);
+            if (date)
+                days.push({ date, count: (id && counts.get(id)) || (level ? 1 : 0), level: Math.min(4, Math.max(0, level)) });
+        }
+        days.sort((a, b) => a.date.localeCompare(b.date));
+        const first = days[0] ? new Date(days[0].date + 'T00:00:00Z').getUTCDay() : 0;
+        for (let i = 0; i < first; i++)
+            days.unshift({ date: '', count: 0, level: 0 });
+        return days;
+    }
+    catch {
+        return [];
+    }
 }

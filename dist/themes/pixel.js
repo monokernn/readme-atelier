@@ -135,8 +135,7 @@ export const pixel = {
             `<g class="__car"><rect x="0" y="${H - 14}" width="20" height="6" fill="#6ee7ff"/><rect x="4" y="${H - 18}" width="10" height="4" fill="#3aa7c4"/><rect x="20" y="${H - 12}" width="4" height="2" fill="#fff1b8"/><rect x="24" y="${H - 12}" width="40" height="2" fill="#fff1b8" opacity=".15"/></g>` +
             `<g class="__car2"><rect x="0" y="${H - 8}" width="20" height="6" fill="${c.accent}"/><rect x="6" y="${H - 12}" width="10" height="4" fill="${mix(c.accent, '#000', 0.3)}"/><rect x="20" y="${H - 6}" width="2" height="2" fill="#ff4d6d"/></g>`;
         const size = fitSize(c.name.toUpperCase(), 40, 520, SK, 18);
-        let text = `<text x="28" y="75" class="__h" style="font-size:${size}px" fill="#07030f">${esc(c.name)}</text>` +
-            `<text x="28" y="72" class="__h" style="font-size:${size}px">${esc(c.name)}</text>`;
+        let text = `<text x="28" y="72" class="__h" style="font-size:${size}px">${esc(c.name)}</text>`;
         let ty = 104;
         for (const l of wrap(c.tagline, 52, 2)) {
             text += `<text x="28" y="${ty}" class="__p" style="font-size:16px">${esc(l)}</text>`;
