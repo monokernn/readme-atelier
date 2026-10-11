@@ -1,0 +1,65 @@
+{
+  "name": "readme-atelier",
+  "version": "0.1.0",
+  "description": "Generate a designed, self-updating GitHub profile README \u0432\u0402\u201d six visual styles, live stats, zero servers.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "readme-atelier": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "action.yml",
+    "README.md",
+    "LICENSE",
+    "fonts/LICENSES.md",
+    "skills",
+    ".claude-plugin"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "fonts": "node scripts/build-fonts.mjs",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "examples": "tsx scripts/examples.ts"
+  },
+  "keywords": [
+    "github",
+    "profile",
+    "readme",
+    "svg",
+    "github-action",
+    "stats"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monokernn/readme-atelier"
+  },
+  "dependencies": {
+    "simple-icons": "^16.35.0",
+    "subset-font": "^2.9.0",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/pixelify-sans": "^5.3.0",
+    "@fontsource/silkscreen": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "readme-atelier",
+  "owner": { "name": "monokern" },
+  "plugins": [
+    {
+      "name": "readme-atelier",
+      "source": "./",
+      "description": "Design and publish a self-updating GitHub profile README in one of six animated styles."
+    }
+  ]
+}

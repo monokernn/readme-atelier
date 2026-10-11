@@ -1,0 +1,48 @@
+name: Readme Atelier
+description: Build a designed, self-updating GitHub profile README from atelier.yml — six visual styles, live stats.
+author: monokernn
+branding:
+  icon: feather
+  color: gray-dark
+
+inputs:
+  config:
+    description: Path to the config file
+    default: atelier.yml
+  token:
+    description: Token used to read your public GitHub data
+    default: ${{ github.token }}
+  commit:
+    description: Commit and push the generated files
+    default: 'true'
+  commit-message:
+    description: Commit message
+    default: 'chore(atelier): refresh profile'
+
+runs:
+  using: composite
+  steps:
+    - name: Install Readme Atelier
+      shell: bash
+      run: cd "$GITHUB_ACTION_PATH" && npm ci --omit=dev --no-audit --no-fund --loglevel=error
+
+    - name: Build profile
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        ATELIER_USER: ${{ github.repository_owner }}
+      run: node "$GITHUB_ACTION_PATH/dist/cli.js" build --config "${{ inputs.config }}"
+
+    - name: Commit
+      if: inputs.commit == 'true'
+      shell: bash
+      run: |
+        git config user.name "readme-atelier[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add README.md atelier
+        if git diff --cached --quiet; then
+          echo "No changes."
+        else
+          git commit -m "${{ inputs.commit-message }}"
+          git push
+        fi

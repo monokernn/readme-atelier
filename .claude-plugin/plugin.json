@@ -1,0 +1,8 @@
+{
+  "name": "readme-atelier",
+  "description": "Design and publish a self-updating GitHub profile README in one of six animated styles.",
+  "version": "0.1.0",
+  "author": { "name": "monokern", "url": "https://x.com/monokern" },
+  "homepage": "https://github.com/monokernn/readme-atelier",
+  "license": "MIT"
+}
