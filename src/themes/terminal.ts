@@ -108,7 +108,7 @@ export const terminal: Theme = {
     const pal = ['#2a2f2c', '#ff5f57', '#febc2e', '#28c840', c.accent, '#4fc1ff', '#c678dd', '#e8efe9'];
     right += pal.map((col, i) => `<rect x="${548 + i * 30}" y="262" width="30" height="14" fill="${col}"/>`).join('');
     const h = Math.max(300, y + 14);
-    return card(W, h, `${c.name} — GitHub profile`, {
+    return card(W, h, `${c.name} · GitHub profile`, {
       ...win(c, W, h, `${p.login}@github: ~`, left + `<line x1="520" y1="48" x2="520" y2="${h - 22}" stroke="${C.line}" stroke-dasharray="2 4"/>` + right),
       fonts: ['mono400', 'mono700'],
     });
@@ -122,7 +122,7 @@ export const terminal: Theme = {
       const dots = Math.max(2, cols - r.short.length - v.length - 2);
       body += `<text x="24" y="${94 + i * 22}" class="__m __in" style="animation-delay:${0.15 + i * 0.1}s"><tspan class="__fg">${r.short}</tspan><tspan class="__dim"> ${'.'.repeat(dots)} </tspan><tspan class="__acc" style="font-weight:700">${v}</tspan></text>`;
     });
-    return card(HALF, 230, 'GitHub stats', { ...win(c, HALF, 230, `stats — ${c.p.login}`, body), fonts: ['mono400', 'mono700'] });
+    return card(HALF, 230, 'GitHub stats', { ...win(c, HALF, 230, `stats · ${c.p.login}`, body), fonts: ['mono400', 'mono700'] });
   },
 
   languages(c) {
@@ -161,7 +161,7 @@ export const terminal: Theme = {
       `<g clip-path="url(#__gclip)"><rect class="__sweep" x="0" y="70" width="120" height="105" fill="url(#__beam)"/></g>` +
       `<text x="28" y="206" class="__m"><tspan class="__acc">$</tspan><tspan class="__fg"> ${esc(contributionLine(c))}</tspan></text>` +
       `<text x="706" y="206" text-anchor="end" class="__m __dim" style="font-size:11px">less</text>${legend}<text x="${714 + 5 * 15 + 2}" y="206" class="__m __dim" style="font-size:11px">more</text>`;
-    const w = win(c, W, 228, 'activity — last 12 months', body);
+    const w = win(c, W, 228, 'activity · last 12 months', body);
     return card(W, 228, 'Contribution activity', { ...w, defs: w.defs + defs2, fonts: ['mono400', 'mono700'] });
   },
 
@@ -213,7 +213,7 @@ export const terminal: Theme = {
   footer(c) {
     const body =
       `<text x="24" y="34" class="__m"><tspan class="__acc">$</tspan><tspan class="__fg"> exit</tspan></text><rect x="82" y="23" width="8" height="14" fill="${c.accent}" class="__cur"/>` +
-      `<text x="${W - 24}" y="34" text-anchor="end" class="__m __dim" style="font-size:11.5px">updated ${updatedLabel(c.p.fetchedAt)} · built with readme-atelier</text>`;
+      `<text x="${W - 24}" y="34" text-anchor="end" class="__m __dim" style="font-size:11.5px">updated ${updatedLabel(c.p.fetchedAt)} · built with Readme Atelier</text>`;
     return card(W, 56, 'Footer', {
       radius: 12,
       fonts: ['mono400'],

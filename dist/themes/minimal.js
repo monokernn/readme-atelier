@@ -93,7 +93,7 @@ export const minimal = {
         b += `<text x="616" y="${y0 + 44}" class="__s __mid" style="font-size:12.5px">Since ${sinceYear(p.createdAt)}</text>`;
         void k;
         const out = base(c, W, H, b);
-        return card(W, H, `${c.name} — GitHub profile`, {
+        return card(W, H, `${c.name} · GitHub profile`, {
             ...out,
             defs: `<filter id="__gray"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.08"/><feFuncG type="linear" slope="1.08"/><feFuncB type="linear" slope="1.08"/></feComponentTransfer></filter>`,
         });
@@ -202,7 +202,7 @@ export const minimal = {
         });
     },
     footer(c) {
-        const seg = `Readme Atelier — ${c.name} — updated ${updatedLabel(c.p.fetchedAt)} — `;
+        const seg = `Readme Atelier · ${c.name} · updated ${updatedLabel(c.p.fetchedAt)} · `;
         const run = (seg + seg + seg + seg).replace(/&/g, '');
         const b = rule(c, 0, W, 0.5, 0.14) +
             `<g class="__mq"><text x="0" y="46" class="__it" style="font-size:28px">${esc(run + run)}</text></g>`;

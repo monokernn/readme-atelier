@@ -65,7 +65,7 @@ export function configToYaml(cfg) {
         if (v === undefined || (Array.isArray(v) && !v.length))
             delete clean[k];
     }
-    return ('# Readme Atelier — edit this file, commit, and your profile rebuilds itself.\n' +
+    return ('# Readme Atelier: edit this file, commit, and your profile rebuilds itself.\n' +
         '# Themes: minimal · y2k · minecraft · terminal · pixel · garden\n' +
         '# Docs: https://github.com/monokernn/readme-atelier#config\n\n' +
         stringify(clean, { lineWidth: 0 }));

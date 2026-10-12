@@ -161,17 +161,17 @@ This archive is a ready-to-upload GitHub **profile repository**.
 
 ## 1 · Create the profile repository
 1. Go to https://github.com/new
-2. Repository name: **${u}** (exactly your username — this makes it your profile README)
+2. Repository name: **${u}** (exactly your username; this makes it your profile README)
 3. Public · leave "Add a README" unchecked · Create repository
 
 ## 2 · Upload these files
 1. On the empty repo page click **uploading an existing file**
-2. Drag in *everything from this folder* — including the hidden \`.github\` folder
+2. Drag in *everything from this folder*, including the hidden \`.github\` folder
    - macOS: press **Cmd + Shift + .** in Finder to show hidden folders
 3. Commit changes
 
 ## 3 · Done
-Open https://github.com/${u} — your profile is live.
+Open https://github.com/${u}. Your profile is live.
 
 The included GitHub Action refreshes your stats every day and rebuilds the profile
 whenever you edit \`atelier.yml\`. If the Action fails with a permission error:
@@ -180,7 +180,7 @@ then **Actions → Readme Atelier → Run workflow**.
 
 Change theme, text, stack or links any time by editing \`atelier.yml\` on GitHub.
 
-— Readme Atelier · ${REPO_URL}
+Readme Atelier · ${REPO_URL}
 `;
 }
 
@@ -215,7 +215,7 @@ export async function buildSingleFile(profile: Profile, cfg: AtelierConfig): Pro
     if (s === 'stack' && cfg.stack?.length) push(theme.stack(ctx));
     if (s === 'footer') push(theme.footer(ctx));
   }
-  const svg = await renderCombined(rows, `${ctx.name} — GitHub profile`);
+  const svg = await renderCombined(rows, `${ctx.name} · GitHub profile`);
   const lines = [START, '', `<p align="center"><img src="./profile.svg" width="100%" alt="${esc(ctx.name)}"/></p>`, ''];
   if (sec.includes('socials') && ctx.socials.length) lines.push(`<p align="center">${ctx.socials.map((s) => `<a href="${esc(s.url)}">${esc(s.kind === 'website' ? s.label : socialIcon(s.kind).title)}</a>`).join(' · ')}</p>`, '');
   if (sec.includes('repos') && repos.length) lines.push(`<p align="center">${repos.map((r) => `<a href="${esc(r.url)}">${esc(r.name)}</a>`).join(' · ')}</p>`, '');

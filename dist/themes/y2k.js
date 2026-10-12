@@ -162,7 +162,7 @@ export const y2k = {
             `<rect width="${W}" height="${H}" fill="url(#__fish)"/>` +
             `<rect x=".75" y=".75" width="${W - 1.5}" height="${H - 1.5}" rx="21" stroke="#fff" stroke-opacity=".3" stroke-width="1.5"/>`;
         const mask = `<mask id="__cm" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#000"/>${cl.mask}</mask>`;
-        return card(W, H, `${c.name} — GitHub profile`, { radius: 22, fonts: FONTS, css: css(c.accent), defs: defs(c.accent) + mask, body });
+        return card(W, H, `${c.name} · GitHub profile`, { radius: 22, fonts: FONTS, css: css(c.accent), defs: defs(c.accent) + mask, body });
     },
     stats(c) {
         let inner = '';

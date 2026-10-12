@@ -1,6 +1,6 @@
 import { computeStreak } from './github.js';
 import { rng } from './util.js';
-/** Fictional profiles for previews and the gallery — no real people. */
+/** Fictional profiles for previews and the gallery. No real people. */
 export const DEMO_USERS = ['nova-kim', 'orbitalfox', 'lumen-ray'];
 const LANGS = {
     TypeScript: '#3178c6', Rust: '#dea584', Python: '#3572A5', Go: '#00ADD8', Swift: '#F05138',
@@ -49,7 +49,7 @@ const PRESETS = {
 };
 export const DEMO_CONFIG = {
     'nova-kim': {
-        tagline: 'Design engineer — interfaces that feel alive',
+        tagline: 'Design engineer making interfaces that feel alive',
         about: ['Shipping motion systems at a tiny studio', 'Currently: WebGPU + type design', 'Ask me about shaders and quiet UI'],
         stack: ['typescript', 'react', 'svelte', 'webgpu', 'figma', 'rust', 'blender', 'vercel'],
         socials: { x: 'novakim', website: 'nova.design', github: 'nova-kim' },

@@ -148,7 +148,7 @@ export const minecraft = {
             `<g shape-rendering="crispEdges">${clouds}</g>` +
             `<g shape-rendering="crispEdges">${treeAt(608, 4)}${treeAt(752, 3)}${ground}${flowers}</g>` +
             title + splash + sub;
-        return card(W, H, `${c.name} — GitHub profile`, {
+        return card(W, H, `${c.name} · GitHub profile`, {
             fonts: FONTS,
             css: css(c.accent),
             radius: 4,

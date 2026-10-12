@@ -56,7 +56,7 @@ function dialog(c, w, h, title, inner) {
 export const pixel = {
     id: 'pixel',
     name: 'Lofi Night',
-    blurb: 'A pixel-art city at night — every building is a week of your commits.',
+    blurb: 'A pixel city at night. Every building is a week of your commits.',
     accent: '#ff6fb1',
     schemes: ['dark'],
     header(c) {
@@ -154,7 +154,7 @@ export const pixel = {
             `<rect width="${W}" height="${Math.max(ty + 70, 150)}" fill="url(#__fade)"/>` +
             text +
             caption;
-        return card(W, H, `${c.name} — GitHub profile`, {
+        return card(W, H, `${c.name} · GitHub profile`, {
             fonts: FONTS,
             css: css(c.accent),
             defs: DEFS + `<linearGradient id="__fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0d0620" stop-opacity=".75"/><stop offset=".55" stop-color="#0d0620" stop-opacity=".25"/><stop offset=".8" stop-color="#0d0620" stop-opacity="0"/></linearGradient>`,

@@ -75,7 +75,7 @@ function paper(c: Ctx, w: number, h: number, title: string, inner: string) {
 export const garden: Theme = {
   id: 'garden',
   name: 'Garden',
-  blurb: 'A floating island that grows with you — repos become trees, contributions become flowers.',
+  blurb: 'A floating island that grows with you. Repos become trees, contributions become flowers.',
   accent: '#ff8fb3',
   schemes: ['light'],
 
@@ -193,7 +193,7 @@ export const garden: Theme = {
       `<rect width="${W}" height="${H}" fill="url(#__sky)"/>` +
       `<circle cx="${W - 70}" cy="64" r="90" fill="#fff6c9" opacity=".5"/><circle cx="${W - 70}" cy="64" r="34" fill="#fff6c9"/>` +
       cloudsSvg + island + butterflies + text;
-    return card(W, H, `${c.name} — GitHub profile`, {
+    return card(W, H, `${c.name} · GitHub profile`, {
       fonts: FONTS,
       css: css(c.accent),
       radius: 22,

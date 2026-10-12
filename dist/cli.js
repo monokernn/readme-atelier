@@ -6,7 +6,7 @@ import { configToYaml, defaultConfig, normalizeConfig, parseConfigYaml, THEME_ID
 import { DEMO_CONFIG, demoProfile } from './demo.js';
 import { fetchProfile } from './github.js';
 import { THEMES } from './themes/index.js';
-const HELP = `readme-atelier — designed, self-updating GitHub profile READMEs
+const HELP = `readme-atelier: designed GitHub profile READMEs that update themselves
 
 Usage
   readme-atelier init   [--user <login>] [--theme <id>]     write atelier.yml + workflow
@@ -75,7 +75,7 @@ async function main() {
         const cfg = defaultConfig(user || 'your-username', theme);
         const cfgPath = path.join(out, 'atelier.yml');
         if (fs.existsSync(cfgPath))
-            console.log('atelier.yml already exists — left untouched');
+            console.log('atelier.yml already exists, left untouched');
         else
             write(cfgPath, configToYaml(cfg));
         write(path.join(out, '.github/workflows/readme-atelier.yml'), workflowYaml());
@@ -104,10 +104,10 @@ async function main() {
     if (flags.theme && THEME_IDS.includes(flags.theme))
         cfg.theme = flags.theme;
     if (!cfg.username && !flags.demo)
-        throw new Error('No username — pass --user or set username in atelier.yml');
+        throw new Error('No username. Pass --user or set username in atelier.yml');
     const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || process.env.INPUT_TOKEN;
     if (!token && !flags.demo)
-        console.warn('! GITHUB_TOKEN not set — contribution graph and commit stats will be empty');
+        console.warn('! GITHUB_TOKEN not set: using the public fallback (no commit, PR or issue totals)');
     const profile = flags.demo ? demoProfile(cfg.username || 'nova-kim') : await fetchProfile(cfg.username, { token, featured: cfg.repos });
     const assets = await buildAssets(profile, cfg, ASSET_DIR);
     // clear stale cards (e.g. a removed social) before writing
@@ -132,7 +132,7 @@ async function main() {
         write(path.join(out, 'README.single.md'), single.readme);
     }
     if (flags.preview)
-        write(path.join(out, 'preview.html'), previewHtml(readme, `${cfg.username} — preview`));
+        write(path.join(out, 'preview.html'), previewHtml(readme, `${cfg.username} · preview`));
     const kb = Object.values(assets).reduce((s, v) => s + v.length, 0) / 1024;
     console.log(`✓ ${THEMES[cfg.theme].name} profile for @${profile.login}: ${Object.keys(assets).length} cards (${kb.toFixed(0)} KB)`);
 }
