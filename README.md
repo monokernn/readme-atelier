@@ -23,7 +23,7 @@ Readme Atelier turns your public GitHub data — stars, commits, streaks, langua
 
 ## Quick start
 
-**Easiest:** use the generator at the website — pick a style, see your real profile live, then install with one of five methods.
+**Easiest:** use the generator at [monokern.design](https://www.monokern.design/). Pick a style, see your real profile live, then install it in one of three ways.
 
 **Template (no downloads):**
 
