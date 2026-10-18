@@ -1,8 +1,8 @@
 import { type Card } from './card.js';
 import type { Theme } from './themes/shared.js';
 import type { AtelierConfig, Ctx, Profile, Scheme } from './types.js';
-export declare const REPO_URL = "https://github.com/monokernn/readme-atelier";
-export declare const ACTION_REF = "monokernn/readme-atelier@v1";
+export declare const REPO_URL = "https://github.com/monokern/readme-atelier";
+export declare const ACTION_REF = "monokern/readme-atelier@v1";
 export declare const ASSET_DIR = "atelier";
 export declare const START = "<!-- readme-atelier:start -->";
 export declare const END = "<!-- readme-atelier:end -->";

@@ -64,7 +64,7 @@ export function configToYaml(cfg: AtelierConfig): string {
   return (
     '# Readme Atelier: edit this file, commit, and your profile rebuilds itself.\n' +
     '# Themes: minimal · y2k · minecraft · terminal · pixel · garden\n' +
-    '# Docs: https://github.com/monokernn/readme-atelier#config\n\n' +
+    '# Docs: https://github.com/monokern/readme-atelier#config\n\n' +
     stringify(clean, { lineWidth: 0 })
   );
 }

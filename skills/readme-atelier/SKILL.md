@@ -9,7 +9,7 @@ You produce the **words and config**; the generator renders the visuals. Never d
 
 ## 1. Gather
 - GitHub username (try `gh api user --jq .login` if they are signed in to `gh`).
-- Style. If unsure, list them: `npx -y github:monokernn/readme-atelier themes`.
+- Style. If unsure, list them: `npx -y github:monokern/readme-atelier themes`.
   `minimal` (editorial, light+dark) · `y2k` (deep-blue dreamcore) · `minecraft` (blocky sandbox) · `terminal` (CRT/neofetch) · `pixel` (lofi pixel city) · `garden` (floating island).
 - Links to show (X, website, LinkedIn, Telegram, Bluesky, email…).
 
@@ -34,13 +34,13 @@ Voice: concrete, lowercase-friendly, no buzzwords. **Show it and wait for approv
 
 ## 4. Preview
 ```bash
-GITHUB_TOKEN=$(gh auth token) npx -y github:monokernn/readme-atelier build --preview
+GITHUB_TOKEN=$(gh auth token) npx -y github:monokern/readme-atelier build --preview
 ```
 Tell the user to open `preview.html` (or summarise what was generated). Iterate on request.
 
 ## 5. Publish (only after an explicit yes)
 ```bash
-npx -y github:monokernn/readme-atelier init --user <user>
+npx -y github:monokern/readme-atelier init --user <user>
 gh repo view <user>/<user> >/dev/null 2>&1 || gh repo create <user>/<user> --public --description "My profile"
 ```
 - New repo: `git init`, add `README.md atelier atelier.yml .github`, commit, set remote `https://github.com/<user>/<user>.git`, push to `main`.
