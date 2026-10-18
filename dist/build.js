@@ -43,8 +43,10 @@ export async function renderNamedCard(profile, cfg, name, scheme) {
     return card ? renderCard(card, 'ra') : null;
 }
 function imgUrl(src, cfg, name, scheme, primary) {
-    if (src.kind === 'files')
-        return `./${src.dir ?? ASSET_DIR}/${name}${scheme === primary ? '' : '-' + scheme}.svg`;
+    if (src.kind === 'files') {
+        const file = `${src.dir ?? ASSET_DIR}/${name}${scheme === primary ? '' : '-' + scheme}.svg`;
+        return `./${src.names?.[file] ?? file}`;
+    }
     const q = `cfg=${encodeConfig(cfg)}` + (scheme === primary ? '' : `&scheme=${scheme}`);
     return `${src.base.replace(/\/$/, '')}/api/card/${name}.svg?${q}`;
 }
@@ -119,6 +121,24 @@ export async function buildAssets(profile, cfg, dir = ASSET_DIR) {
     }
     return files;
 }
+/**
+ * Put a content hash in every card's file name (header.svg -> header.1a2b3c4d.svg).
+ * GitHub serves README images with a 5 minute cache, so a rebuilt card under the
+ * same name keeps showing the old picture; a new name shows up at once.
+ */
+export function fingerprint(files) {
+    const out = {};
+    const names = {};
+    for (const [file, svg] of Object.entries(files)) {
+        let h = 0x811c9dc5;
+        for (let i = 0; i < svg.length; i++)
+            h = Math.imul(h ^ svg.charCodeAt(i), 0x01000193);
+        const named = file.replace(/\.svg$/, `.${(h >>> 0).toString(16).padStart(8, '0')}.svg`);
+        names[file] = named;
+        out[named] = svg;
+    }
+    return { files: out, names };
+}
 export function workflowYaml() {
     return `# Rebuilds your profile README every day and whenever atelier.yml changes.
 name: Readme Atelier
@@ -175,9 +195,9 @@ Readme Atelier · ${REPO_URL}
 }
 /** Everything needed for the ZIP / local install: README, assets, config, workflow, guide. */
 export async function buildRepoFiles(profile, cfg) {
-    const assets = await buildAssets(profile, cfg);
+    const { files: assets, names } = fingerprint(await buildAssets(profile, cfg));
     return {
-        'README.md': mergeReadme(null, readmeBlock(profile, cfg, { kind: 'files' })),
+        'README.md': mergeReadme(null, readmeBlock(profile, cfg, { kind: 'files', names })),
         'atelier.yml': configToYaml(cfg),
         '.github/workflows/readme-atelier.yml': workflowYaml(),
         'INSTALL.md': installGuide(cfg),

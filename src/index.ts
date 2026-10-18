@@ -8,7 +8,7 @@ export {
   THEME_IDS, SECTION_IDS, SOCIAL_KINDS,
 } from './config.js';
 export {
-  renderNamedCard, readmeBlock, mergeReadme, buildAssets, buildRepoFiles, buildSingleFile, workflowYaml, installGuide,
+  renderNamedCard, readmeBlock, mergeReadme, buildAssets, fingerprint, buildRepoFiles, buildSingleFile, workflowYaml, installGuide,
   REPO_URL, ACTION_REF, ASSET_DIR, START, END, type CardName, type ImageSource,
 } from './build.js';
 export { renderCard, renderCombined, type Card } from './card.js';

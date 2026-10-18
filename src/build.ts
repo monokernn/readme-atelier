@@ -49,11 +49,14 @@ export async function renderNamedCard(profile: Profile, cfg: AtelierConfig, name
 
 /** Where images live: files in the repo, or the hosted endpoint. */
 export type ImageSource =
-  | { kind: 'files'; dir?: string }
+  | { kind: 'files'; dir?: string; names?: Record<string, string> }
   | { kind: 'hosted'; base: string };
 
 function imgUrl(src: ImageSource, cfg: AtelierConfig, name: string, scheme: Scheme, primary: Scheme): string {
-  if (src.kind === 'files') return `./${src.dir ?? ASSET_DIR}/${name}${scheme === primary ? '' : '-' + scheme}.svg`;
+  if (src.kind === 'files') {
+    const file = `${src.dir ?? ASSET_DIR}/${name}${scheme === primary ? '' : '-' + scheme}.svg`;
+    return `./${src.names?.[file] ?? file}`;
+  }
   const q = `cfg=${encodeConfig(cfg)}` + (scheme === primary ? '' : `&scheme=${scheme}`);
   return `${src.base.replace(/\/$/, '')}/api/card/${name}.svg?${q}`;
 }
@@ -128,6 +131,24 @@ export async function buildAssets(profile: Profile, cfg: AtelierConfig, dir = AS
   return files;
 }
 
+/**
+ * Put a content hash in every card's file name (header.svg -> header.1a2b3c4d.svg).
+ * GitHub serves README images with a 5 minute cache, so a rebuilt card under the
+ * same name keeps showing the old picture; a new name shows up at once.
+ */
+export function fingerprint(files: Record<string, string>): { files: Record<string, string>; names: Record<string, string> } {
+  const out: Record<string, string> = {};
+  const names: Record<string, string> = {};
+  for (const [file, svg] of Object.entries(files)) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < svg.length; i++) h = Math.imul(h ^ svg.charCodeAt(i), 0x01000193);
+    const named = file.replace(/\.svg$/, `.${(h >>> 0).toString(16).padStart(8, '0')}.svg`);
+    names[file] = named;
+    out[named] = svg;
+  }
+  return { files: out, names };
+}
+
 export function workflowYaml(): string {
   return `# Rebuilds your profile README every day and whenever atelier.yml changes.
 name: Readme Atelier
@@ -186,9 +207,9 @@ Readme Atelier · ${REPO_URL}
 
 /** Everything needed for the ZIP / local install: README, assets, config, workflow, guide. */
 export async function buildRepoFiles(profile: Profile, cfg: AtelierConfig): Promise<Record<string, string>> {
-  const assets = await buildAssets(profile, cfg);
+  const { files: assets, names } = fingerprint(await buildAssets(profile, cfg));
   return {
-    'README.md': mergeReadme(null, readmeBlock(profile, cfg, { kind: 'files' })),
+    'README.md': mergeReadme(null, readmeBlock(profile, cfg, { kind: 'files', names })),
     'atelier.yml': configToYaml(cfg),
     '.github/workflows/readme-atelier.yml': workflowYaml(),
     'INSTALL.md': installGuide(cfg),

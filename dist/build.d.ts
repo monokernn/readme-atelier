@@ -15,6 +15,7 @@ export declare function renderNamedCard(profile: Profile, cfg: AtelierConfig, na
 export type ImageSource = {
     kind: 'files';
     dir?: string;
+    names?: Record<string, string>;
 } | {
     kind: 'hosted';
     base: string;
@@ -25,6 +26,15 @@ export declare function readmeBlock(profile: Profile, cfg: AtelierConfig, src: I
 export declare function mergeReadme(existing: string | null, block: string): string;
 /** Every card, for every scheme the theme supports, as SVG files keyed by repo path. */
 export declare function buildAssets(profile: Profile, cfg: AtelierConfig, dir?: string): Promise<Record<string, string>>;
+/**
+ * Put a content hash in every card's file name (header.svg -> header.1a2b3c4d.svg).
+ * GitHub serves README images with a 5 minute cache, so a rebuilt card under the
+ * same name keeps showing the old picture; a new name shows up at once.
+ */
+export declare function fingerprint(files: Record<string, string>): {
+    files: Record<string, string>;
+    names: Record<string, string>;
+};
 export declare function workflowYaml(): string;
 export declare function installGuide(cfg: AtelierConfig): string;
 /** Everything needed for the ZIP / local install: README, assets, config, workflow, guide. */

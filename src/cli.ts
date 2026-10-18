@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildAssets, buildSingleFile, mergeReadme, readmeBlock, workflowYaml, ASSET_DIR } from './build.js';
+import { buildAssets, buildSingleFile, fingerprint, mergeReadme, readmeBlock, workflowYaml, ASSET_DIR } from './build.js';
 import { configToYaml, defaultConfig, normalizeConfig, parseConfigYaml, THEME_IDS } from './config.js';
 import { DEMO_CONFIG, demoProfile } from './demo.js';
 import { fetchProfile } from './github.js';
@@ -104,7 +104,7 @@ async function main() {
   if (!token && !flags.demo) console.warn('! GITHUB_TOKEN not set: using the public fallback (no commit, PR or issue totals)');
   const profile = flags.demo ? demoProfile(cfg.username || 'nova-kim') : await fetchProfile(cfg.username, { token, featured: cfg.repos });
 
-  const assets = await buildAssets(profile, cfg, ASSET_DIR);
+  const { files: assets, names } = fingerprint(await buildAssets(profile, cfg, ASSET_DIR));
   // clear stale cards (e.g. a removed social) before writing
   const dir = path.join(out, ASSET_DIR);
   if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) if (f.endsWith('.svg')) fs.rmSync(path.join(dir, f));
@@ -116,7 +116,7 @@ async function main() {
     write(path.join(out, ASSET_DIR, 'README.backup.md'), existing);
     console.log(`• previous README saved to ${ASSET_DIR}/README.backup.md`);
   }
-  const readme = mergeReadme(existing?.includes('readme-atelier:placeholder') ? null : existing, readmeBlock(profile, cfg, { kind: 'files' }));
+  const readme = mergeReadme(existing?.includes('readme-atelier:placeholder') ? null : existing, readmeBlock(profile, cfg, { kind: 'files', names }));
   write(readmePath, readme);
 
   if (flags.single) {
