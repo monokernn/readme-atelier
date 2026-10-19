@@ -27,14 +27,14 @@ Readme Atelier turns your public GitHub data — stars, commits, streaks, langua
 
 **Template (no downloads):**
 
-1. Open [readme-atelier-template](https://github.com/monokern/readme-atelier-template) → **Use this template** → name the repository exactly like your username, Public.
+1. Open [readme-atelier-template](https://github.com/monokernn/readme-atelier-template) → **Use this template** → name the repository exactly like your username, Public.
 2. Edit `atelier.yml` (theme, tagline, links, stack) and commit.
 3. The **Readme Atelier** workflow builds your profile in about a minute.
 
 **Existing profile repo:**
 
 ```bash
-npx -y github:monokern/readme-atelier init --user <you> --theme y2k
+npx -y github:monokernn/readme-atelier init --user <you> --theme y2k
 git add . && git commit -m "add readme atelier" && git push
 ```
 
@@ -43,7 +43,7 @@ git add . && git commit -m "add readme atelier" && git push
 **Locally:**
 
 ```bash
-GITHUB_TOKEN=<read-only token> npx -y github:monokern/readme-atelier build --user <you> --theme garden --preview
+GITHUB_TOKEN=<read-only token> npx -y github:monokernn/readme-atelier build --user <you> --theme garden --preview
 ```
 
 Writes `README.md`, `atelier/*.svg` and a `preview.html`. Use `--demo` to try styles with a fictional profile and no network.
@@ -90,7 +90,7 @@ accent: '#ff5fc8'                # optional accent override
 ### Action inputs
 
 ```yaml
-- uses: monokern/readme-atelier@v1
+- uses: monokernn/readme-atelier@v1
   with:
     config: atelier.yml          # default
     token: ${{ secrets.ATELIER_TOKEN }}   # optional PAT to include private contribution counts
@@ -108,7 +108,7 @@ The generated block lives between `<!-- readme-atelier:start -->` and `<!-- read
 The repository is agent-friendly: [`AGENTS.md`](./AGENTS.md) explains the workflow and [`skills/readme-atelier/SKILL.md`](./skills/readme-atelier/SKILL.md) is a Claude Code skill. Install it as a plugin:
 
 ```
-/plugin marketplace add monokern/readme-atelier
+/plugin marketplace add monokernn/readme-atelier
 /plugin install readme-atelier@readme-atelier
 ```
 

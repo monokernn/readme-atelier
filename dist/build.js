@@ -3,8 +3,8 @@ import { configToYaml, encodeConfig, makeCtx } from './config.js';
 import { THEMES } from './themes/index.js';
 import { socialIcon } from './icons.js';
 import { esc } from './util.js';
-export const REPO_URL = 'https://github.com/monokern/readme-atelier';
-export const ACTION_REF = 'monokern/readme-atelier@v1';
+export const REPO_URL = 'https://github.com/monokernn/readme-atelier';
+export const ACTION_REF = 'monokernn/readme-atelier@v1';
 export const ASSET_DIR = 'atelier';
 export const START = '<!-- readme-atelier:start -->';
 export const END = '<!-- readme-atelier:end -->';
@@ -156,7 +156,7 @@ permissions:
 jobs:
   build:
     # never runs inside the template itself, only in your copy
-    if: github.repository != 'monokern/readme-atelier-template'
+    if: github.repository != 'monokernn/readme-atelier-template'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
